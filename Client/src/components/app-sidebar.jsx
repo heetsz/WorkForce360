@@ -3,13 +3,13 @@
 import * as React from "react"
 import {
   BookOpen,
-  Bot,
   Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
+  UserCog,
+  Users,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -63,53 +63,53 @@ export function AppSidebar(props) {
     ],
     navMain: [
       {
-        title: "Playground",
-        url: "#",
-        icon: SquareTerminal,
+        title: "Employees",
+        url: "/dashboard",
+        icon: Users,
         isActive: true,
         items: [
-          { title: "History", url: "#" },
-          { title: "Starred", url: "#" },
-          { title: "Settings", url: "#" },
+          { title: "View Employees", url: "/dashboard/view-employees" },
+          { title: "Employees Attendance", url: "/dashboard/employees-attendance" },
+          { title: "Performance", url: "/dashboard/performance" },
         ],
       },
       {
-        title: "Models",
-        url: "#",
-        icon: Bot,
+        title: "Teams",
+        url: " /dashboard",
+        icon: UserCog,
         items: [
-          { title: "Genesis", url: "#" },
-          { title: "Explorer", url: "#" },
-          { title: "Quantum", url: "#" },
+          { title: "Research & Development", url: " /dashboard" },
+          { title: "Sales & Marketing", url: " /dashboard" },
+          { title: "Customer Support", url: " /dashboard" },
         ],
       },
-      {
-        title: "Documentation",
-        url: "#",
-        icon: BookOpen,
-        items: [
-          { title: "Introduction", url: "#" },
-          { title: "Get Started", url: "#" },
-          { title: "Tutorials", url: "#" },
-          { title: "Changelog", url: "#" },
-        ],
-      },
-      {
-        title: "Settings",
-        url: "#",
-        icon: Settings2,
-        items: [
-          { title: "General", url: "#" },
-          { title: "Team", url: "#" },
-          { title: "Billing", url: "#" },
-          { title: "Limits", url: "#" },
-        ],
-      },
+      // {
+      //   title: "Documentation",
+      //   url: " /dashboard",
+      //   icon: BookOpen,
+      //   items: [
+      //     { title: "Introduction", url: " /dashboard" },
+      //     { title: "Get Started", url: " /dashboard" },
+      //     { title: "Tutorials", url: " /dashboard" },
+      //     { title: "Changelog", url: " /dashboard" },
+      //   ],
+      // },
+      // {
+      //   title: "Settings",
+      //   url: " /dashboard",
+      //   icon: Settings2,
+      //   items: [
+      //     { title: "General", url: " /dashboard" },
+      //     { title: "Team", url: " /dashboard" },
+      //     { title: "Billing", url: " /dashboard" },
+      //     { title: "Limits", url: " /dashboard" },
+      //   ],
+      // },
     ],
     projects: [
-      { name: "Design Engineering", url: "#", icon: Frame },
-      { name: "Sales & Marketing", url: "#", icon: PieChart },
-      { name: "Travel", url: "#", icon: Map },
+      { name: "Design Engineering", url: " /dashboard", icon: Frame },
+      { name: "High Frequency Trading", url: " /dashboard", icon: PieChart },
+      { name: "Cloud Platform & Infrastructure", url: " /dashboard", icon: Map },
     ],
   }
 

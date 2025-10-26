@@ -27,11 +27,29 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import React, { useState } from "react";
+import axios from "axios";
 
 export function NavUser({
   user
 }) {
+  const base_url = import.meta.env.VITE_BACKEND_URL;
+  const [loading, setLoading] = useState(false);
+
   const { isMobile } = useSidebar()
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await axios.post(`${base_url}/logout`, {}, { withCredentials: true });
+    } catch (err) {
+      console.error("Logout failed:", err.response || err.message);
+    } finally {
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.reload();
+      setLoading(false);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -72,13 +90,6 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
@@ -93,8 +104,10 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut />
-              Log out
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2" />
+                Log Out
+              </DropdownMenuItem>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
+import ViewEmployees from './pages/ViewEmployees';
+import EmployeesAttendance from './pages/EmployeesAttendance';
+import Performance from './pages/Performance';
 
 const App = () => {
   const [token , setToken ] = useState(null);
@@ -32,7 +35,11 @@ const App = () => {
         <Route path="/" element={<NotFound />} /> 
         <Route path="/login" element={token ? <Navigate to="/dashboard" replace /> : <Login />} />
         <Route path="/register" element={token ? <Navigate to="/dashboard" replace /> : <Register />} />
-        <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" replace />} />
+        <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" replace />} >
+          <Route path="view-employees" element={<ViewEmployees />} />
+          <Route path="employees-attendance" element={<EmployeesAttendance />} />
+          <Route path="performance" element={<Performance />} />
+        </Route> 
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>

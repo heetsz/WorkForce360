@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/app-sidebar";
 import {
       Breadcrumb,
       BreadcrumbItem,
@@ -6,15 +6,31 @@ import {
       BreadcrumbList,
       BreadcrumbPage,
       BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import React from 'react'
+
+import { Separator } from "@/components/ui/separator";
 import {
       SidebarInset,
       SidebarProvider,
       SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { Outlet, useLocation, Link } from "react-router-dom";
+
+function getBreadcrumbs(pathname) {
+      // Split path and filter empty segments
+      const segments = pathname.split("/").filter(Boolean);
+      // Build breadcrumb data
+      return segments.map((segment, idx) => {
+            const url = "/" + segments.slice(0, idx + 1).join("/");
+            return { name: segment.charAt(0).toUpperCase() + segment.slice(1), url };
+      });
+}
 
 export default function Page() {
+      const location = useLocation();
+      const breadcrumbs = getBreadcrumbs(location.pathname);
+
       return (
             <SidebarProvider>
                   <AppSidebar />
@@ -28,28 +44,31 @@ export default function Page() {
                                     />
                                     <Breadcrumb>
                                           <BreadcrumbList>
-                                                <BreadcrumbItem className="hidden md:block">
-                                                      <BreadcrumbLink href="#">
-                                                            Building Your Application
+                                                <BreadcrumbItem>
+                                                      <BreadcrumbLink as={Link} to="/">
+                                                            Home
                                                       </BreadcrumbLink>
                                                 </BreadcrumbItem>
-                                                <BreadcrumbSeparator className="hidden md:block" />
-                                                <BreadcrumbItem>
-                                                      <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                                                </BreadcrumbItem>
+                                                {breadcrumbs.map((crumb, idx) => (
+                                                      <React.Fragment key={crumb.url}>
+                                                            <BreadcrumbSeparator />
+                                                            <BreadcrumbItem>
+                                                                  {idx === breadcrumbs.length - 1 ? (
+                                                                        <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
+                                                                  ) : (
+                                                                        <BreadcrumbLink as={Link} to={crumb.url}>
+                                                                              {crumb.name}
+                                                                        </BreadcrumbLink>
+                                                                  )}
+                                                            </BreadcrumbItem>
+                                                      </React.Fragment>
+                                                ))}
                                           </BreadcrumbList>
                                     </Breadcrumb>
                               </div>
                         </header>
-                        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                                    <div className="bg-muted/50 aspect-video rounded-xl" />
-                                    <div className="bg-muted/50 aspect-video rounded-xl" />
-                                    <div className="bg-muted/50 aspect-video rounded-xl" />
-                              </div>
-                              <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
-                        </div>
+                        <Outlet />
                   </SidebarInset>
             </SidebarProvider>
-      )
+      );
 }
