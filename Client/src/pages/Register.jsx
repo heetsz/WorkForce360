@@ -30,8 +30,10 @@ export default function RegisterPage() {
 );
 
                   if (res.status === 200) {
-                        setMessage(`Registration successful.`);
-                        window.location.reload();
+                        setMessage("Verification code sent to your email. Please verify.");
+                        setTimeout(() => {
+                              navigate("/verify-email", { state: { email } });
+                        }, 1500);
                   }
             } catch (err) {
                   console.log(err.response);

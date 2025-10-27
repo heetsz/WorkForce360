@@ -8,12 +8,20 @@ const hrSchema = new Schema({
             unique: true,
             required: true,
       },
-
       password: {
             type: String,
             required: true
       },
-
+      isVerified: {
+            type: Boolean,
+            default: false
+      },
+      verificationCode: {
+            type: String,
+      },
+      verificationCodeExpires: {
+            type: Date,
+      },
 })
 const hr = model('hr', hrSchema)
 export default hr;
