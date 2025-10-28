@@ -81,7 +81,7 @@ export default function Employees() {
         <CardContent className="p-0">
           <div className="border-t">
             {/* Table Header */}
-            <div className="grid grid-cols-[70px_90px_130px_150px_160px_120px_90px_70px_90px_60px] gap-4 px-6 py-3 bg-muted/50 font-medium text-sm border-b">
+            <div className="grid grid-cols-[70px_70px_120px_130px_160px_120px_90px_80px_110px_60px] gap-4 px-6 py-3 bg-muted/50 font-medium text-sm border-b">
               <div>Photo</div>
               <div>CID</div>
               <div>Name</div>
@@ -109,7 +109,7 @@ export default function Employees() {
                   {employees.map((emp, index) => (
                     <div
                       key={emp._id || index}
-                      className="grid grid-cols-[70px_90px_130px_150px_160px_120px_90px_70px_90px_60px] gap-4 px-6 py-4 hover:bg-muted/30 transition-colors items-center"
+                      className="grid grid-cols-[70px_70px_120px_130px_160px_120px_90px_70px_120px_60px] gap-4 px-6 py-4 hover:bg-muted/30 transition-colors items-center"
                     >
                       <div>
                         <Avatar className="h-10 w-10">
