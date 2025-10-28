@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import db from "./config/db.js";
 import authRouter from "./routes/auth-route.js";
+import employeeRouter from "./routes/employee-route.js";
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use('/api', authRouter);
+app.use('/api', employeeRouter);
 
 const PORT = process.env.PORT;
 app.listen(PORT, async () => {

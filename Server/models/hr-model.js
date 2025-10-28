@@ -23,5 +23,5 @@ const hrSchema = new Schema({
             type: Date,
       },
 })
-const hr = model('hr', hrSchema)
+const hr = model('HR', hrSchema)
 export default hr;

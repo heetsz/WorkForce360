@@ -52,7 +52,7 @@ export const registration = async (req, res) => {
             });
       }
 };
-// Verification endpoint
+
 export const verifyEmailCode = async (req, res) => {
       try {
             const { email, code } = req.body;
@@ -72,13 +72,11 @@ export const verifyEmailCode = async (req, res) => {
             if (user.verificationCode !== code) {
                   return res.status(400).json({ message: "Invalid verification code." });
             }
-            // Mark user as verified
             user.isVerified = true;
             user.verificationCode = undefined;
             user.verificationCodeExpires = undefined;
             await user.save();
 
-            // Issue JWT token
             const token = jwt.sign({ userId: user._id, userEmail: user.email }, process.env.ACCESS_TOKEN, {
                   expiresIn: '1h'
             });
