@@ -25,8 +25,8 @@ const uploadToCloudinary = async (file, { cloudName, uploadPreset }) => {
 const AddEmployee = () => {
   const navigate = useNavigate()
   const base_url = import.meta.env.VITE_BACKEND_URL
-  const cloudName = import.meta.env.VITE_CLOUD_NAME
-  const uploadPreset = import.meta.env.VITE_PRESET_NAME
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || import.meta.env.VITE_CLOUD_NAME
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || import.meta.env.VITE_PRESET_NAME
 
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
@@ -86,12 +86,22 @@ const AddEmployee = () => {
     setSaving(true)
     setMessage('')
     try {
-      // Prepare payload matching backend model
-      const payload = {
-        ...form,
-        salary: form.salary ? Number(form.salary) : undefined,
-        dob: form.dob ? new Date(form.dob) : undefined,
-      }
+      // Build payload excluding empty strings so backend defaults apply
+      const payload = {}
+      Object.entries(form).forEach(([key, val]) => {
+        if (key === 'documents') return
+        if (val !== '' && val !== null && val !== undefined) {
+          payload[key] = val
+        }
+      })
+      // Normalize numeric/date fields
+      if (form.salary) payload.salary = Number(form.salary)
+      if (form.dob) payload.dob = new Date(form.dob)
+      // Documents: include only provided URLs
+      const docs = Object.fromEntries(
+        Object.entries(form.documents).filter(([, v]) => v && String(v).trim() !== '')
+      )
+      if (Object.keys(docs).length > 0) payload.documents = docs
       const res = await axios.post(`${base_url}/add-employee`, payload, { withCredentials: true })
       if (res.status === 201 || res.status === 200) {
         setMessage('Employee added successfully.')
@@ -112,7 +122,7 @@ const AddEmployee = () => {
         <div className="flex flex-col gap-6 rounded-xl border bg-white p-6 md:flex-row md:items-center">
           <div className="flex items-center gap-5">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={form.picture} alt={form.name} />
+              <AvatarImage src={form.picture} alt={"https://avatar.iran.liara.run/public"} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">

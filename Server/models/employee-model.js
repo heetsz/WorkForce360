@@ -11,7 +11,7 @@ const employeeSchema = new Schema({
       },
       CID: {
             type: String,
-            default: "1",
+            default: "CID000",
       },
       gender: {
             type: String,

@@ -1,11 +1,36 @@
 import Employee from "../models/employee-model.js";
 
+// Helper to remove empty values so Mongoose defaults can apply
+const cleanObject = (obj) => {
+      if (Array.isArray(obj)) return obj.map(cleanObject).filter(v => v !== undefined)
+      if (obj && typeof obj === 'object') {
+            Object.keys(obj).forEach((key) => {
+                  const val = obj[key]
+                  if (val === '' || val === null || val === undefined) {
+                        delete obj[key]
+                  } else if (typeof val === 'object') {
+                        const cleaned = cleanObject(val)
+                        if (typeof cleaned === 'object' && !Array.isArray(cleaned) && Object.keys(cleaned).length === 0) {
+                              delete obj[key]
+                        } else {
+                              obj[key] = cleaned
+                        }
+                  }
+            })
+            return obj
+      }
+      return obj
+}
+
 export const addEmployee = async (req, res) => {
       try {
-            const employeesData = Array.isArray(req.body) ? req.body : [req.body];
+            let employeesData = Array.isArray(req.body) ? req.body : [req.body];
+
+            // Clean incoming data to allow defaults to populate
+            employeesData = employeesData.map((emp) => cleanObject({ ...emp }))
 
             // Extract all CIDs from incoming data
-            const incomingCIDs = employeesData.map(emp => emp.CID);
+            const incomingCIDs = employeesData.map(emp => emp.CID).filter(Boolean);
 
             // Find existing employees with same CIDs
             const existing = await Employee.find({ CID: { $in: incomingCIDs } });
