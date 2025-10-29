@@ -28,7 +28,7 @@ export default function VerifyEmailPage() {
       }, { withCredentials: true });
       if (res.status === 200) {
         setMessage("Email verified and registration complete.");
-            setTimeout(() => window.location.reload(), 1500);
+        window.location.reload();
       }
     } catch (err) {
       setMessage(err.response?.data?.message || "Verification failed");

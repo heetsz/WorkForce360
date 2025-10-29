@@ -54,7 +54,7 @@ const App = () => {
           path="/register"
           element={token ? <Navigate to="/dashboard" replace /> : <Register />}
         />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/verify-email" element={token ? <Navigate to="/dashboard" replace /> : <VerifyEmail />} />
 
         <Route
           path="/dashboard"
