@@ -80,10 +80,11 @@ export const verifyEmailCode = async (req, res) => {
             const token = jwt.sign({ userId: user._id, userEmail: user.email }, process.env.ACCESS_TOKEN, {
                   expiresIn: '1h'
             });
+            const isProd = process.env.NODE_ENV === 'production';
             const cookieOptions = {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: false,
+                  secure: isProd, // required for cross-site cookies on HTTPS
+                  sameSite: isProd ? 'none' : 'lax',
                   maxAge: 60 * 60 * 1000,
             };
             return res.cookie('token', token, cookieOptions).status(200).json({
@@ -126,10 +127,11 @@ export const login = async (req, res) => {
                   expiresIn: '1h'
             })
 
+            const isProd = process.env.NODE_ENV === 'production';
             const cookieOptions = {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: false,
+                  secure: isProd,
+                  sameSite: isProd ? 'none' : 'lax',
                   maxAge: 60 * 60 * 1000,
             };
 
@@ -147,10 +149,11 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
       try {
+            const isProd = process.env.NODE_ENV === 'production';
             const cookieClearOptions = {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: false,
+                  secure: isProd,
+                  sameSite: isProd ? 'none' : 'lax',
             };
             res.clearCookie('token', cookieClearOptions)
 

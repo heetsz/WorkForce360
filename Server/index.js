@@ -14,6 +14,9 @@ import analyticsRouter from "./routes/analytics-route.js";
 dotenv.config();
 const app = express();
 
+// Behind Render/other proxies, this ensures secure cookies work correctly
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(cors({
       origin: process.env.FRONTEND_URL,
@@ -29,7 +32,7 @@ app.use('/api', mailRouter);
 app.use('/api', candidateRouter);
 app.use('/api', analyticsRouter);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
       console.log(`Server running`);
       await db();
