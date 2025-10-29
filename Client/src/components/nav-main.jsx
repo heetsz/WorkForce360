@@ -91,7 +91,7 @@ export function NavMain({ items }) {
             <SidebarMenuButton
               tooltip="Candidate Management"
               asChild
-              onClick={() => navigate("/dashboard/analytics")}
+              onClick={() => navigate("/dashboard/candidates")}
             >
               <span className="flex items-center gap-2 cursor-pointer">
                 <ClipboardList className="h-4 w-4" />

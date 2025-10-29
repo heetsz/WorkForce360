@@ -12,6 +12,7 @@ import Analytics from './pages/Analytics';
 import VerifyEmail from './pages/VerifyEmail';
 import Employee from './pages/Employee';
 import AddEmployee from './pages/AddEmployee';
+import CandidateManagement from './pages/CandidateManagement';
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="add-employee" element={<AddEmployee />} />
           <Route path="employees-attendance" element={<EmployeesAttendance />} />
           <Route path="performance" element={<Performance />} />
+          <Route path="candidates" element={<CandidateManagement />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

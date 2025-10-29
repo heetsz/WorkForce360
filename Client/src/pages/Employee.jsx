@@ -6,7 +6,10 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
-import { Loader2, Mail, Phone, MapPin, Calendar, FileText, ArrowLeft, IndianRupee } from 'lucide-react'
+import { Loader2, Mail, Phone, MapPin, Calendar, FileText, ArrowLeft, IndianRupee, Send } from 'lucide-react'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 const Field = ({ label, value, icon: Icon }) => {
   if (value === undefined || value === null || value === '') return null
@@ -147,31 +150,41 @@ const Employee = () => {
         <Separator className="my-6" />
 
         {/* Details grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
-            <CardContent className="space-y-4 p-6">
-              <div className="text-sm font-medium text-slate-900">Personal Information</div>
-              <Field label="Gender" value={emp?.gender} />
-              <Field label="Date of Birth" value={formatDate(dob)} icon={Calendar} />
-              <Field label="Email" value={emp?.email} icon={Mail} />
-              <Field label="Phone" value={phone} icon={Phone} />
-              <Field label="Address" value={emp?.address} icon={MapPin} />
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Combined Details (Personal + Employment) */}
+          <Card className="lg:col-span-2">
+            <CardContent className="p-6 space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div className="text-sm font-medium text-slate-900">Personal Information</div>
+                  <Field label="Gender" value={emp?.gender} />
+                  <Field label="Date of Birth" value={formatDate(dob)} icon={Calendar} />
+                  <Field label="Email" value={emp?.email} icon={Mail} />
+                  <Field label="Phone" value={phone} icon={Phone} />
+                  <Field label="Address" value={emp?.address} icon={MapPin} />
+                </div>
+                <div className="space-y-4">
+                  <div className="text-sm font-medium text-slate-900">Employment Details</div>
+                  <Field label="Role" value={emp?.role} />
+                  <Field label="Department" value={emp?.department} />
+                  <Field label="Salary" value={formatCurrency(emp?.salary)} />
+                  <Field label="Joining Date" value={formatDate(emp?.joiningDate)} icon={Calendar} />
+                  <Field label="Status" value={emp?.status} />
+                </div>
+              </div>
             </CardContent>
           </Card>
 
+          {/* Compose Email */}
           <Card>
-            <CardContent className="space-y-4 p-6">
-              <div className="text-sm font-medium text-slate-900">Employment Details</div>
-              <Field label="Role" value={emp?.role} />
-              <Field label="Department" value={emp?.department} />
-              <Field label="Salary" value={formatCurrency(emp?.salary)} />
-              <Field label="Joining Date" value={formatDate(emp?.joiningDate)} icon={Calendar} />
-              <Field label="Status" value={emp?.status} />
+            <CardContent className="p-6 space-y-3">
+              <div className="text-sm font-medium text-slate-900">Send Email</div>
+              <ComposeMail toEmail={emp?.email} name={emp?.name} />
             </CardContent>
           </Card>
 
           {/* Documents */}
-          <Card className="md:col-span-2 lg:col-span-3">
+              <Card className="lg:col-span-3">
             <CardContent className="space-y-4 p-6">
               <div className="text-sm font-medium text-slate-900">Documents</div>
               {documents && documents.length > 0 ? (
@@ -196,3 +209,68 @@ const Employee = () => {
 }
 
 export default Employee
+
+// Inline mail compose component with lightweight toast
+function ComposeMail({ toEmail, name }) {
+  const base_url = import.meta.env.VITE_BACKEND_URL
+  const [subject, setSubject] = useState("")
+  const [body, setBody] = useState("")
+  const [sending, setSending] = useState(false)
+  const [toast, setToast] = useState(null) // {type: 'success'|'error', msg}
+
+  const showToast = (type, msg) => {
+    setToast({ type, msg })
+    setTimeout(() => setToast(null), 2500)
+  }
+
+  const handleSend = async (e) => {
+    e.preventDefault()
+    if (!toEmail) return showToast('error', 'No email available for this employee')
+    if (!subject) return showToast('error', 'Please enter a subject')
+    if (!body) return showToast('error', 'Please write a message')
+    setSending(true)
+    try {
+      await axios.post(`${base_url}/mail/send`, {
+        to: toEmail,
+        subject,
+        text: body,
+      }, { withCredentials: true })
+      setSubject("")
+      setBody("")
+      showToast('success', 'Email sent successfully')
+    } catch (err) {
+      showToast('error', err.response?.data?.message || 'Failed to send email')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div className="relative">
+      {toast ? (
+        <div className={`absolute -top-2 right-0 -translate-y-full rounded-md border px-3 py-2 text-xs shadow-sm ${toast.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
+          {toast.msg}
+        </div>
+      ) : null}
+      <form onSubmit={handleSend} className="space-y-3">
+        <div className="grid gap-1.5">
+          <Label htmlFor="to">To</Label>
+          <Input id="to" value={toEmail || ''} disabled />
+        </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="sub">Subject</Label>
+          <Input id="sub" placeholder={`Re: ${name || 'Your recent update'}`} value={subject} onChange={(e)=>setSubject(e.target.value)} />
+        </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="msg">Message</Label>
+          <Textarea id="msg" rows={6} placeholder="Write your message..." value={body} onChange={(e)=>setBody(e.target.value)} />
+        </div>
+        <div className="flex items-center justify-end">
+          <Button type="submit" disabled={sending || !toEmail}>
+            <Send className="mr-2 h-4 w-4" /> {sending ? 'Sending…' : 'Send'}
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
+}
