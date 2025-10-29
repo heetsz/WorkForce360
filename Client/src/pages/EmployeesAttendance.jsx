@@ -259,6 +259,9 @@ const EmployeesAttendance = () => {
                             {item.checkOut ? (
                               <span className="inline-flex items-center gap-1"><Clock4 className="h-3.5 w-3.5" /> Out: {formatTime(item.checkOut)}</span>
                             ) : null}
+                            {item.notes ? (
+                              <span className="text-slate-700 wrap-break-word">{item.notes}</span>
+                            ) : null}
                           </div>
                         ) : (
                           <>{item.notes ? <span className="text-slate-700">{item.notes}</span> : null}</>
