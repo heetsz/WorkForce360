@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="url(#g1)" opacity="0.1"/>
+  <g filter="url(#shadow)">
+    <rect x="120" y="160" width="1040" height="400" rx="16" fill="white"/>
+  </g>
+  <g>
+    <rect x="180" y="220" width="240" height="14" rx="7" fill="#e2e8f0"/>
+    <rect x="180" y="244" width="180" height="10" rx="5" fill="#e2e8f0"/>
+
+    <rect x="180" y="290" width="280" height="140" rx="12" fill="url(#g2)" opacity="0.12"/>
+    <rect x="500" y="290" width="600" height="18" rx="9" fill="#e5e7eb"/>
+    <rect x="500" y="318" width="520" height="12" rx="6" fill="#e5e7eb"/>
+    <rect x="500" y="338" width="560" height="12" rx="6" fill="#e5e7eb"/>
+    <rect x="500" y="358" width="420" height="12" rx="6" fill="#e5e7eb"/>
+
+    <rect x="500" y="398" width="340" height="14" rx="7" fill="#e5e7eb"/>
+    <rect x="500" y="420" width="560" height="10" rx="5" fill="#e5e7eb"/>
+  </g>
+  <circle cx="320" cy="360" r="58" fill="url(#g2)" opacity="0.18"/>
+  <circle cx="320" cy="360" r="42" fill="url(#g2)" opacity="0.35"/>
+  <circle cx="320" cy="360" r="18" fill="#22c55e"/>
+</svg>

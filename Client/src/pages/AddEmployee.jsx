@@ -116,7 +116,7 @@ const AddEmployee = () => {
   }
 
   return (
-    <div className="p-6 md:p-8 w-full">
+  <div className="p-3 md:p-4 w-full">
       <div className="mx-auto w-full max-w-none">
         {/* Header */}
         <div className="flex flex-col gap-6 rounded-xl border bg-white p-6 md:flex-row md:items-center">

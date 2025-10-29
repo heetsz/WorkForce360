@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNotification } from "@/components/ui/notification";
 
 export default function RegisterPage() {
       const navigate = useNavigate();
@@ -14,12 +15,12 @@ export default function RegisterPage() {
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
       const [loading, setLoading] = useState(false);
-      const [message, setMessage] = useState("");
+      const { success, error } = useNotification();
 
       const handleRegister = async (e) => {
             e.preventDefault();
             setLoading(true);
-            setMessage("");
+            
 
             try {
                   const res = await axios.post(`${base_url}/register`, {
@@ -30,14 +31,14 @@ export default function RegisterPage() {
 );
 
                   if (res.status === 200) {
-                        setMessage("Verification code sent to your email. Please verify.");
+                        success('Verification code sent to your email. Please verify.', 'Registered');
                         setTimeout(() => {
                               navigate("/verify-email", { state: { email } });
-                        }, 1500);
+                        }, 2000);
                   }
             } catch (err) {
                   console.log(err.response);
-                  setMessage(err.response?.data?.message || "Something went wrong");
+                  error(err.response?.data?.message || 'Something went wrong', 'Registration failed');
             } finally {
                   setLoading(false);
             }
@@ -95,7 +96,7 @@ export default function RegisterPage() {
                                           {loading ? "Registering..." : "Register"}
                                     </Button>
 
-                                    {message && <p className="text-center text-sm mt-2 text-red-500">{message}</p>}
+                                    {/* Notifications appear as floating cards; no inline message. */}
 
                                     <p className="text-center text-sm mt-2">
                                           Already have an account?

@@ -13,6 +13,8 @@ import VerifyEmail from './pages/VerifyEmail';
 import Employee from './pages/Employee';
 import AddEmployee from './pages/AddEmployee';
 import CandidateManagement from './pages/CandidateManagement';
+import { NotificationProvider } from '@/components/ui/notification';
+import Landing from './pages/Landing';
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -37,11 +39,12 @@ const App = () => {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <NotificationProvider>
+      <BrowserRouter>
+        <Routes>
         <Route
           path="/"
-          element={token ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
+          element={<Landing />}
         />
         <Route
           path="/login"
@@ -68,8 +71,9 @@ const App = () => {
         </Route>
 
         <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </NotificationProvider>
   );
 };
 

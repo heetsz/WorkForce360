@@ -136,7 +136,7 @@ const Performance = () => {
   }
 
   return (
-    <div className="p-6 md:p-8 w-full">
+  <div className="p-3 md:p-4 w-full">
       <div className="mx-auto w-full max-w-none space-y-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>

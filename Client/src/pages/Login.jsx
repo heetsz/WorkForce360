@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNotification } from "@/components/ui/notification";
 
 export default function LoginPage() {
       const base_url = import.meta.env.VITE_BACKEND_URL;
@@ -12,22 +13,24 @@ export default function LoginPage() {
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
       const [loading, setLoading] = useState(false);
-      const [message, setMessage] = useState("");
+      const { success, error } = useNotification();
 
       const handleLogin = async (e) => {
             e.preventDefault();
             setLoading(true);
-            setMessage("");
+            
             try {
                   const res = await axios.post(
                         `${base_url}/login`,
                         { email, password },
                         { withCredentials: true }
                   );
-                  setMessage(res.data.message);
-                  window.location.reload();
+                  success(res.data.message || 'Login successful', 'Login');
+                  setTimeout(() => {
+                        window.location.reload();
+                  }, 2000);
             } catch (err) {
-                  setMessage(err.response?.data?.message || "Something went wrong");
+                  error(err.response?.data?.message || 'Something went wrong', 'Login failed');
             } finally {
                   setLoading(false);
             }
@@ -75,7 +78,7 @@ export default function LoginPage() {
                                           </Link>
                                     </div>
 
-                                    {message && <p className="text-center text-sm mt-2 text-red-500">{message}</p>}
+                                    {/* Notifications appear as floating cards; no inline message. */}
                               </form>
                         </CardContent>
                   </Card>
