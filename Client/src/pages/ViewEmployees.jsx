@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -59,7 +59,7 @@ export default function Employees() {
             Manage and view all employees in your organization
           </p>
         </div>
-        <Button onClick={() => navigate("/add-employee")} size="default">
+        <Button onClick={() => navigate("/dashboard/add-employee")} size="default">
           <Plus className="mr-2 h-4 w-4" />
           Add Employee
         </Button>
@@ -122,7 +122,7 @@ export default function Employees() {
                       <div className="font-mono text-sm">{emp.CID}</div>
                       <div
                         className="font-medium truncate cursor-pointer"
-                        onClick={() => navigate(`/employee/${emp._id}`)}
+                        onClick={() => navigate(`/dashboard/${emp.CID}`)}
                       >
                         {emp.name}
                       </div>

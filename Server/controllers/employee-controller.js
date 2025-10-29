@@ -54,7 +54,41 @@ export const getEmployees = async (req, res) => {
       }
 };
 
-// 🧩 DELETE Employee Route
+// Get single employee by CID
+export const getEmployeeByCID = async (req, res) => {
+      try {
+            const { CID } = req.params;
+
+            if (!CID) {
+                  return res.status(400).json({
+                        success: false,
+                        message: "CID is required"
+                  });
+            }
+
+            const employee = await Employee.findOne({ CID });
+
+            if (!employee) {
+                  return res.status(404).json({
+                        success: false,
+                        message: `No employee found with CID: ${CID}`
+                  });
+            }
+
+            res.status(200).json({
+                  success: true,
+                  employee
+            });
+      } catch (error) {
+            console.error("Error fetching employee:", error);
+            res.status(500).json({
+                  success: false,
+                  message: "Failed to fetch employee",
+                  error: error.message
+            });
+      }
+};
+
 export const deleteEmployee = async (req, res) => {
       try {
             const { CID } = req.params;
